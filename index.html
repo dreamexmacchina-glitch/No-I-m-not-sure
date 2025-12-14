@@ -1,11 +1,433 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Il mio gioco</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ImNotSure — Il tuo nuovo gioco</title>
+  <meta name="description" content="Sito ufficiale del gioco ImNotSure: trailer, descrizione, roadmap e community." />
+  <style>
+    /* ===== Reset & base ===== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    :root {
+      --bg: #0b0d12;
+      --text: #e6e9ef;
+      --muted: #a8b0c0;
+      --accent: #7ee081;
+      --accent-2: #69c0ff;
+      --card: #121622;
+      --border: #1b2133;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 14px;
+      --grad: radial-gradient(1200px 600px at 10% 10%, rgba(105,192,255,.12), transparent 60%),
+              radial-gradient(900px 500px at 80% 20%, rgba(126,224,129,.12), transparent 60%);
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f7f9fc;
+        --text: #101322;
+        --muted: #495064;
+        --card: #ffffff;
+        --border: #e6eaf3;
+        --shadow: 0 8px 24px rgba(16, 19, 34, .08);
+      }
+    }
+
+    /* ===== Layout ===== */
+    .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    header {
+      position: sticky; top: 0; z-index: 40;
+      background: linear-gradient(to bottom, rgba(0,0,0,.35), transparent), var(--bg);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: .2px; }
+    .brand .logo {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: conic-gradient(from 180deg, var(--accent), var(--accent-2), var(--accent));
+      box-shadow: var(--shadow);
+    }
+    .nav-links { display: flex; gap: 18px; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-weight: 600; }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--card); color: var(--text); text-decoration: none; font-weight: 700;
+      box-shadow: var(--shadow);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #0b0d12; border: none;
+    }
+    .btn-ghost { background: transparent; border-color: var(--border); box-shadow: none; }
+
+    /* Mobile nav */
+    .hamburger { display: none; width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); }
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .hamburger { display: inline-flex; align-items: center; justify-content: center; }
+    }
+    .mobile-menu {
+      position: fixed; inset: 64px 0 auto 0; background: var(--bg);
+      border-top: 1px solid var(--border); display: none; flex-direction: column; padding: 16px;
+    }
+    .mobile-menu a { padding: 12px; border-radius: 8px; color: var(--text); text-decoration: none; }
+    .mobile-menu.active { display: flex; }
+
+    /* ===== Hero ===== */
+    .hero {
+      position: relative; padding: 90px 0 40px; background: var(--grad);
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 28px; align-items: center;
+    }
+    @media (max-width: 980px) { .hero-grid { grid-template-columns: 1fr; } }
+    .hero h1 {
+      font-size: clamp(32px, 4vw, 52px); line-height: 1.05; margin: 0 0 12px;
+    }
+    .hero p { font-size: clamp(16px, 2vw, 18px); color: var(--muted); margin: 0 0 22px; }
+    .tagline { display: inline-flex; gap: 10px; align-items: center; padding: 8px 12px; border: 1px dashed var(--border); border-radius: 999px; color: var(--muted); margin-bottom: 14px; }
+    .media {
+      border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--card); box-shadow: var(--shadow);
+      aspect-ratio: 16/9; display: grid; place-items: center;
+    }
+    .media .placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(126,224,129,.25), rgba(105,192,255,.25));
+      display: grid; place-items: center; color: #0b0d12; font-weight: 800; letter-spacing: .2px;
+    }
+
+    /* ===== Sections ===== */
+    section { padding: 60px 0; }
+    .section-title { font-size: 28px; margin: 0 0 10px; }
+    .section-desc { color: var(--muted); margin: 0 0 24px; }
+
+    /* Features */
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    @media (max-width: 980px) { .features { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px) { .features { grid-template-columns: 1fr; } }
+    .feature-card {
+      border: 1px solid var(--border); border-radius: var(--radius); background: var(--card);
+      padding: 18px; box-shadow: var(--shadow); opacity: 0; transform: translateY(12px); transition: .5s ease;
+    }
+    .feature-card.active { opacity: 1; transform: translateY(0); }
+    .feature-icon { width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); margin-bottom: 12px; }
+    .feature-card h4 { margin: 0 0 8px; }
+    .feature-card p { margin: 0; color: var(--muted); }
+
+    /* Gallery */
+    .gallery {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }
+    @media (max-width: 860px) { .gallery { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 520px) { .gallery { grid-template-columns: 1fr; } }
+    .shot {
+      border-radius: 12px; border: 1px solid var(--border); overflow: hidden; background: var(--card);
+      aspect-ratio: 16/9; position: relative; opacity: 0; transform: scale(.98); transition: .5s ease;
+    }
+    .shot.active { opacity: 1; transform: scale(1); }
+    .shot::after {
+      content: "Placeholder"; position: absolute; inset: 0; display: grid; place-items: center; color: var(--muted);
+      backdrop-filter: brightness(1.1);
+    }
+
+    /* Roadmap */
+    .roadmap {
+      position: relative; border-left: 2px dashed var(--border); margin-left: 10px; padding-left: 18px; display: grid; gap: 18px;
+    }
+    .milestone {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px; box-shadow: var(--shadow); position: relative;
+      opacity: 0; transform: translateX(-10px); transition: .5s ease;
+    }
+    .milestone.active { opacity: 1; transform: translateX(0); }
+    .milestone::before {
+      content: ""; position: absolute; left: -28px; top: 16px; width: 12px; height: 12px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: 2px solid var(--bg);
+    }
+    .badge { display: inline-flex; padding: 4px 8px; background: #0f1320; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; margin-bottom: 8px; }
+    .status { font-weight: 800; color: var(--accent); }
+    .status.late { color: #ff7b7b; }
+
+    /* FAQ */
+    .faq { display: grid; gap: 12px; }
+    .faq-item { border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); overflow: hidden; }
+    .faq-q {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 14px 16px; font-weight: 700; cursor: pointer;
+    }
+    .faq-a { padding: 0 16px 16px; color: var(--muted); display: none; }
+    .faq-item.active .faq-a { display: block; }
+
+    /* Newsletter */
+    .newsletter {
+      border: 1px solid var(--border); border-radius: var(--radius); background: var(--card);
+      padding: 18px; box-shadow: var(--shadow);
+      display: grid; grid-template-columns: 1.1fr .9fr; gap: 16px;
+    }
+    @media (max-width: 860px) { .newsletter { grid-template-columns: 1fr; } }
+    .input {
+      display: flex; gap: 10px;
+    }
+    input[type="email"] {
+      flex: 1; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: transparent; color: var(--text);
+    }
+
+    /* Footer */
+    footer { padding: 40px 0; border-top: 1px solid var(--border); color: var(--muted); }
+    .foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    @media (max-width: 720px) { .foot { flex-direction: column; align-items: flex-start; } }
+    .social { display: flex; gap: 10px; }
+    .social a { text-decoration: none; color: var(--muted); border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; }
+  </style>
 </head>
 <body>
-  <h1>Benvenuto nel mio sito!</h1>
-  <p>Qui pubblicherò aggiornamenti sul mio gioco.</p>
+
+  <!-- ===== Header & nav ===== -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <span>ImNotSure</span>
+        </div>
+        <div class="nav-links">
+          <a href="#features">Caratteristiche</a>
+          <a href="#trailer">Trailer</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#roadmap">Roadmap</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-ghost" href="#newsletter">Newsletter</a>
+          <a class="btn btn-primary" href="#buy">Wishlist / Acquista</a>
+          <button class="hamburger" id="menuBtn" aria-label="Apri menu">☰</button>
+        </div>
+      </nav>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#features">Caratteristiche</a>
+      <a href="#trailer">Trailer</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#faq">FAQ</a>
+      <a href="#newsletter">Newsletter</a>
+      <a href="#buy">Wishlist / Acquista</a>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero" id="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="tagline">Nuovo action sandbox • Mod support • Multiplayer</span>
+        <h1>Un mondo vivo, creato per essere esplorato.</h1>
+        <p>Costruisci, combatti, scopri biomi procedurali e affronta dungeon generati ogni volta in modo diverso. ImNotSure è un’avventura sandbox con sistemi profondi e una community al centro.</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn btn-primary" href="#trailer">Guarda il trailer</a>
+          <a class="btn" href="#features">Scopri le feature</a>
+        </div>
+      </div>
+      <div class="media" id="trailer">
+        <!-- Sostituisci con un <video> o <iframe> YouTube -->
+        <div class="placeholder">Trailer placeholder (16:9)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Features ===== -->
+  <section id="features">
+    <div class="container">
+      <h2 class="section-title">Caratteristiche principali</h2>
+      <p class="section-desc">Struttura “mezzo piena”: riempi i box con dettagli concreti, gif brevi, numeri e sistemi chiave.</p>
+      <div class="features">
+        <article class="feature-card obs">
+          <div class="feature-icon" aria-hidden="true"></div>
+          <h4>Biomi reattivi</h4>
+          <p>Ogni bioma ha fauna, meteo e risorse dinamiche. Gli eventi influenzano il mondo e le missioni emergenti.</p>
+        </article>
+        <article class="feature-card obs">
+          <div class="feature-icon" aria-hidden="true"></div>
+          <h4>Combat profondo</h4>
+          <p>Armi con mosse, parry e build. Nemici con AI modulare, boss con pattern leggibili ma impegnativi.</p>
+        </article>
+        <article class="feature-card obs">
+          <div class="feature-icon" aria-hidden="true"></div>
+          <h4>Crafting & progression</h4>
+          <p>Alberi tecnologici, ricette scoperte in-game, villaggi che crescono grazie alle tue scelte.</p>
+        </article>
+        <article class="feature-card obs">
+          <div class="feature-icon" aria-hidden="true"></div>
+          <h4>Multiplayer cooperativo</h4>
+          <p>Sessioni drop-in/out, instanze condivise, strumenti per moderazione e hosting community.</p>
+        </article>
+        <article class="feature-card obs">
+          <div class="feature-icon" aria-hidden="true"></div>
+          <h4>Mod support</h4>
+          <p>API scriptabili, workshop integrato, caricamento hot-reload per contenuti della community.</p>
+        </article>
+        <article class="feature-card obs">
+          <div class="feature-icon" aria-hidden="true"></div>
+          <h4>Arte e atmosfera</h4>
+          <p>Direzione artistica coerente, palette dinamiche e soundtrack reattiva agli eventi del mondo.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Gallery ===== -->
+  <section id="gallery">
+    <div class="container">
+      <h2 class="section-title">Screenshot e concept</h2>
+      <p class="section-desc">Sostituisci i riquadri con PNG/JPG in /img. Mantieni coerenza visiva, etichette e didascalie.</p>
+      <div class="gallery">
+        <div class="shot obs"></div>
+        <div class="shot obs"></div>
+        <div class="shot obs"></div>
+        <div class="shot obs"></div>
+        <div class="shot obs"></div>
+        <div class="shot obs"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Roadmap ===== -->
+  <section id="roadmap">
+    <div class="container">
+      <h2 class="section-title">Roadmap</h2>
+      <p class="section-desc">Mostra obiettivi trimestrali, milestone, stato e criteri di “done”. Mantieni aggiornato.</p>
+      <div class="roadmap">
+        <div class="milestone obs">
+          <span class="badge">Q1 • Systems</span>
+          <h4>Core gameplay loop <span class="status">In corso</span></h4>
+          <p>Iterazioni su combat + raccolta + craft. Telemetria base per tuning difficoltà.</p>
+        </div>
+        <div class="milestone obs">
+          <span class="badge">Q2 • Content</span>
+          <h4>Biomi e dungeon <span class="status">Pianificato</span></h4>
+          <p>3 biomi vertical slice, 2 dungeon con boss e eventi dinamici.</p>
+        </div>
+        <div class="milestone obs">
+          <span class="badge">Q3 • Community</span>
+          <h4>Coop & mod tools <span class="status late">A rischio</span></h4>
+          <p>Netcode, lobby, API mod e pipeline contenuti. Test pubblici ristretti.</p>
+        </div>
+        <div class="milestone obs">
+          <span class="badge">Q4 • Launch</span>
+          <h4>Wishlist & release <span class="status">TBD</span></h4>
+          <p>Pagina store, trailer finale, PR e supporto post-lancio.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section id="faq">
+    <div class="container">
+      <h2 class="section-title">Domande frequenti</h2>
+      <div class="faq">
+        <div class="faq-item">
+          <div class="faq-q">Su quali piattaforme uscirà?<span>+</span></div>
+          <div class="faq-a">PC al lancio. Valutiamo console dopo la stabilizzazione del netcode.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Ci sarà localizzazione italiana?<span>+</span></div>
+          <div class="faq-a">Sì, l’italiano è tra le lingue prioritarie al day-one.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Microtransazioni?<span>+</span></div>
+          <div class="faq-a">No. Aggiornamenti major gratuiti e DLC sostanziali a parte.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Newsletter & CTA ===== -->
+  <section id="newsletter">
+    <div class="container">
+      <div class="newsletter">
+        <div>
+          <h3 style="margin:0 0 8px">Iscriviti alla newsletter</h3>
+          <p class="section-desc" style="margin:0">Ricevi update sullo sviluppo, test pubblici e trailer.</p>
+        </div>
+        <form class="input" onsubmit="event.preventDefault(); alert('Grazie! (placeholder)');">
+          <input type="email" name="email" placeholder="tua@email.com" required />
+          <button class="btn btn-primary" type="submit">Iscriviti</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Buy / Wishlist anchor ===== -->
+  <section id="buy">
+    <div class="container">
+      <h2 class="section-title">Aggiungi alla wishlist</h2>
+      <p class="section-desc">Collega qui i tuoi store (Steam, itch.io, ecc.).</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <a class="btn btn-primary" href="#" onclick="alert('Placeholder: collega lo store')">Steam</a>
+        <a class="btn" href="#" onclick="alert('Placeholder: collega lo store')">itch.io</a>
+        <a class="btn" href="#" onclick="alert('Placeholder: collega lo store')">Epic</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <div class="container foot">
+      <div>© <span id="year"></span> ImNotSure. Tutti i diritti riservati.</div>
+      <div class="social">
+        <a href="#" onclick="alert('Placeholder: Discord')">Discord</a>
+        <a href="#" onclick="alert('Placeholder: Twitter/X')">Twitter</a>
+        <a href="#" onclick="alert('Placeholder: YouTube')">YouTube</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Anno dinamico
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn?.addEventListener('click', () => mobileMenu.classList.toggle('active'));
+    mobileMenu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('active')));
+
+    // Scroll reveal (IntersectionObserver)
+    const obsEls = document.querySelectorAll('.obs');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.18 });
+    obsEls.forEach(el => io.observe(el));
+
+    // FAQ toggle
+    document.querySelectorAll('.faq-item').forEach(item => {
+      const q = item.querySelector('.faq-q');
+      q.addEventListener('click', () => item.classList.toggle('active'));
+    });
+
+    // Optional: parallax soft effect on hero (perf-safe)
+    const hero = document.getElementById('hero');
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const y = window.scrollY;
+          hero.style.backgroundPosition = `center ${-y * 0.05}px`;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  </script>
 </body>
 </html>
