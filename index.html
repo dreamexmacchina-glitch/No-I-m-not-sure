@@ -1,28 +1,106 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ImNotSure Dev Log</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-    body { margin:0; background:#111; color:#eee; font-family:'Press Start 2P', monospace; }
-    header { background:#222; padding:20px; text-align:center; border-bottom:4px solid #44ff88; }
-    nav a { color:#44ff88; text-decoration:none; margin:0 8px; }
-    .container { max-width:900px; margin:20px auto; padding:0 20px; }
-    h1,h2 { color:#44ff88; }
-    .log-entry, .roadmap, .about {
-      background:#1a1a1a; border:2px solid #44ff88; padding:16px; margin-bottom:20px; border-radius:8px;
+    body {
+      margin: 0;
+      background: #111;
+      color: #eee;
+      font-family: 'Press Start 2P', monospace;
+      transition: background 0.5s, color 0.5s;
     }
-    footer { background:#222; color:#888; text-align:center; padding:10px; font-size:12px; }
-    canvas { background:#000; display:none; margin:20px auto; border:2px solid #44ff88; }
-    #console { display:none; background:#000; color:#44ff88; padding:10px; font-size:12px; }
+    header {
+      background: #222;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 4px solid #44ff88;
+    }
+    nav a {
+      color: #44ff88;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    h1, h2 {
+      color: #44ff88;
+    }
+    .log-entry, .roadmap, .about {
+      background: #1a1a1a;
+      border: 2px solid #44ff88;
+      padding: 16px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+    }
+    footer {
+      background: #222;
+      color: #888;
+      text-align: center;
+      padding: 10px;
+      font-size: 12px;
+    }
+    canvas {
+      background: #000;
+      display: none;
+      margin: 20px auto;
+      border: 2px solid #44ff88;
+    }
+    #console {
+      display: none;
+      background: #000;
+      color: #44ff88;
+      padding: 10px;
+      font-size: 12px;
+    }
+
+    /* Temi dinamici */
+    .pixel-red-green {
+      background: linear-gradient(45deg, #220000, #002200);
+      color: #ff4444;
+    }
+    .pixel-red-green h1, .pixel-red-green h2 {
+      color: #44ff44;
+    }
+    .arcade {
+      background: #000;
+      color: #f0f000;
+      font-family: 'Courier New', monospace;
+    }
+    .matrix {
+      background: #000;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+    }
+    .checkered {
+      background-image: repeating-linear-gradient(
+        45deg,
+        #111 0px,
+        #111 20px,
+        #222 20px,
+        #222 40px
+      );
+    }
+    .glitch {
+      animation: glitch 0.2s infinite;
+    }
+    @keyframes glitch {
+      0% { background: #111; color: #eee; }
+      50% { background: #ff0044; color: #000; }
+      100% { background: #111; color: #eee; }
+    }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>ImNotSure — Dev Log</h1>
+  <h1 id="title">ImNotSure — Dev Log</h1>
   <nav>
     <a href="#updates">Aggiornamenti</a>
     <a href="#roadmap">Roadmap</a>
@@ -32,7 +110,6 @@
 
 <div class="container">
 
-  <!-- Index aggiornamenti -->
   <section id="updates">
     <h2>Index Aggiornamenti</h2>
     <div class="log-entry">
@@ -45,7 +122,6 @@
     </div>
   </section>
 
-  <!-- Roadmap -->
   <section id="roadmap">
     <h2>Roadmap</h2>
     <div class="roadmap">
@@ -58,7 +134,6 @@
     </div>
   </section>
 
-  <!-- About -->
   <section id="about">
     <h2>About</h2>
     <div class="about">
@@ -66,7 +141,6 @@
     </div>
   </section>
 
-  <!-- Easter egg canvases -->
   <canvas id="snake" width="300" height="300"></canvas>
   <canvas id="pong" width="400" height="200"></canvas>
   <canvas id="space" width="400" height="300"></canvas>
@@ -78,47 +152,7 @@
   <p>© 2025 ImNotSure — Tutti i diritti riservati</p>
 </footer>
 
-<script>
-  // Easter egg: Konami Code → Snake
-  const konami = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
-  let pos = 0;
-  document.addEventListener("keydown", e => {
-    if(e.key.toLowerCase() === konami[pos].toLowerCase()) {
-      pos++;
-      if(pos === konami.length) {
-        document.getElementById("snake").style.display="block";
-        alert("Snake attivato!");
-        pos=0;
-      }
-    } else pos=0;
-  });
-
-  // Easter egg: tasto P → Pong
-  document.addEventListener("keydown", e => {
-    if(e.key.toLowerCase()==="p") {
-      document.getElementById("pong").style.display="block";
-      alert("Pong attivato!");
-    }
-  });
-
-  // Easter egg: tasto S → Space Invaders
-  document.addEventListener("keydown", e => {
-    if(e.key.toLowerCase()==="s") {
-      document.getElementById("space").style.display="block";
-      alert("Space Invaders attivato!");
-    }
-  });
-
-  // Easter egg: sequenza "open" → console segreta
-  let seq="";
-  document.addEventListener("keydown", e=>{
-    seq+=e.key.toLowerCase();
-    if(seq.includes("open")) {
-      document.getElementById("console").style.display="block";
-    }
-    if(seq.length>10) seq=seq.slice(-4);
-  });
-</script>
+<script src="eastereggs.js"></script>
 
 </body>
 </html>
