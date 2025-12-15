@@ -19,3 +19,4 @@ Benvenuto nel diario di sviluppo di **ImNotSure**, un progetto di gioco indie in
 👾 *Creato da TheDreamExMacchina*, sviluppatore indipendente italiano, questo dev log documenta ogni passo del viaggio creativo: dalla visione iniziale alla realizzazione del prototipo, passando per la costruzione di mondi e sistemi di gioco unici.
 
 🛠️ Che tu sia uno sviluppatore, un appassionato di pixel art o semplicemente curioso del processo creativo dietro un gioco indie, questo spazio è pensato per condividere progressi, idee e ispirazione.
+🌐 Visita il devlog: [dreamexmacchina-glitch.github.io/No-I-m-not-sure](https://dreamexmacchina-glitch.github.io/No-I-m-not-sure)
