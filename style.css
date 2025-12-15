@@ -1,0 +1,30 @@
+.pixel-red-green {
+  background: linear-gradient(45deg, #220000, #002200);
+  color: #ff4444;
+}
+
+.pixel-red-green h1, .pixel-red-green h2 {
+  color: #44ff44;
+}
+
+.arcade {
+  background: #000;
+  color: #f0f000;
+  font-family: 'Courier New', monospace;
+}
+
+.matrix {
+  background: #000;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+}
+
+.checkered {
+  background-image: repeating-linear-gradient(
+    45deg,
+    #111 0px,
+    #111 20px,
+    #222 20px,
+    #222 40px
+  );
+}
