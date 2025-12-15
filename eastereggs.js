@@ -53,20 +53,20 @@ document.addEventListener("keydown", e => {
   if (seq.includes("open")) {
     document.getElementById("console").style.display = "block";
   }
-  if (dream.includes("dream")) {
+  if (dream.includes("d")) {
     document.body.style.background = "#002244";
     document.body.style.color = "#88ccff";
     alert("🌌 Tema onirico attivato!");
   }
-  if (glitchSeq.includes("glitch")) {
+  if (glitchSeq.includes("g")) {
     document.body.className = "pixel-red-green";
     alert("🟥🟩 Tema glitch pixel attivato!");
   }
-  if (retroSeq.includes("retro")) {
+  if (retroSeq.includes("r")) {
     document.body.className = "arcade";
     alert("🕹️ Modalità arcade attivata!");
   }
-  if (matrixSeq.includes("matrix")) {
+  if (matrixSeq.includes("m")) {
     document.body.className = "matrix";
     alert("💾 Terminale attivato!");
   }
